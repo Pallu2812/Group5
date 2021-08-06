@@ -1,0 +1,170 @@
+---
+output:
+  pdf_document: default
+---
+---
+title: "Assignment 1 Group 5"
+---
+title: "Assignment 1"
+author: "Group 5"
+output:
+  pdf_document: default
+  ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(magrittr)
+library(tidyverse)
+library(tinytex)
+
+```
+
+## Load dataset
+
+```{r echo=TRUE}
+Car.Sales.1 <- read.csv("~/R/AutomobileSales.csv")
+```
+
+## Introduction
+We have a car sales dataset which we have found from Kaggle.com. We will be studying and performing analysis using the R programming. Our analysis will consist of all the requirements mentioned in the assignment.
+
+## List Variables
+
+```{r echo=TRUE}
+ls(Car.Sales.1)
+```
+## Print Structure
+
+```{r echo=TRUE}
+str(Car.Sales.1)
+```
+## Print the top 15 rows
+
+```{r echo=TRUE}
+head(Car.Sales.1, 15)
+```
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## User defined function 
+
+```{r echo=TRUE}
+Car.Sales.1$Fuel_capacitynew = Car.Sales.1$Fuel_capacity * 3 
+##creating a new field Fuel_capacitynew which gets value by multiplying field Fuel_capacity by 3
+```
+## Data manipulation techniques and filter rows
+
+```{r echo=TRUE}
+Car.Sales.1%>% filter(Sales_in_thousands > 39)
+```
+## Dependent & independent variables and use reshaping techniques
+
+```{r echo=TRUE}
+totalcardim1 = cbind(Car.Sales.1$Length, Car.Sales.1$Width, Car.Sales.1$Wheelbase) 
+
+totalcardim1 = as.data.frame(totalcardim1) 
+
+names(totalcardim1)[2] = "width1" 
+
+names(totalcardim1)[3] = "wheelbase1" 
+
+names(totalcardim1)[1] = "length1"
+View(totalcardim1)
+## totalcardim1 is dependent variable and length, width, wheelbase are independent variable
+```
+## Remove missing values
+
+```{r echo=TRUE}
+na.omit(Car.Sales.1)
+```
+## Remove duplicated data
+
+```{r echo=TRUE}
+duplicated(Car.Sales.1)
+```
+## Reorder multiple rows 
+
+```{r echo=TRUE}
+Car.Sales.1%>%arrange(desc(Curb_weight))
+## Sorting Field Curb_Weight in descending order
+```
+## Rename some of the column names 
+
+```{r echo=TRUE}
+names(Car.Sales.1)[names(Car.Sales.1) == "Vehicle_type"]<-"vehicle_model"
+## Renaming vehicle type to Vehicle model
+```
+## Add new variables in your data frame by using a mathematical function 
+
+```{r echo=TRUE}
+Car.Sales.1$Horsepowernew = Car.Sales.1$Horsepower*0.5
+
+```
+## Create a training set using random number generator engine  
+
+```{r echo=TRUE}
+set.seed(1234) 
+Car.Sales.1%>% sample_n (5, replace = FALSE)
+
+```
+## Print the summary statistics   
+
+```{r echo=TRUE}
+Car.Sales.1 %>% group_by (Manufacturer) %>% summarise(mean(Price_in_thousands)) 
+
+```
+## Calculate Mean  
+
+```{r echo=TRUE}
+mean(Car.Sales.1$Sales_in_thousands)  
+
+```
+## Calculate Median  
+
+```{r echo=TRUE}
+median(Car.Sales.1$Sales_in_thousands)  
+
+```
+## Calculate Mode  
+
+```{r echo=TRUE}
+mode(Car.Sales.1$Sales_in_thousands)  
+
+```
+## Calculate Range  
+
+```{r echo=TRUE}
+range(Car.Sales.1$Sales_in_thousands)  
+
+```
+## Scatter plot  
+
+```{r echo=TRUE}
+ggplot(data = Car.Sales.1, aes(x = Horsepower, y = Fuel_efficiency))+geom_point(size=1.2, color ="steelblue", shape=21)  
+## Scatter plot of Horsepower vs Fuel efficiency
+```
+## Bar plot  
+
+```{r echo=TRUE}
+ggplot(data = Car.Sales.1, aes(x = Fuel_efficiency))+geom_bar(fill = "aquamarine4")   
+## Barplot of Fuelefficiency
+```
+## Find the correlation  
+
+```{r echo=TRUE}
+y = Car.Sales.1[,"Sales_in_thousands"] 
+
+x = Car.Sales.1[,"Price_in_thousands"] 
+
+corr2 = cor(x,y, method = "pearson") 
+
+corr2  
+## correlation between sales_in_thousands and price_in_thousands,
+```
+# Conclusion
+
+After performing the analysis of the Car sales dataset, it is clear that correlation between sales vs price is negative meaning the price and sales are inversely proportional to each other. The sales price of car ranges from 0.110 to 540.651 (in thousands) and the mean sale value is 52.99808 (in thousands). The mean price in thousands for Porsche is 62.47 (highest) while for Saturn is 14.27 (lowest).
+
+##Repository Link:
+https://github.com/Pallu2812/Group5.git
+
